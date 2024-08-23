@@ -80,5 +80,11 @@ def task_toggle() -> Response:
     return redirect(url_for("index"))
 
 
+@app.errorhandler(404)
+def page_not_found(error) -> tuple:
+    print(error)
+    return render_template("page_not_found.html", error=error), 404
+
+
 if __name__ == "__main__":
     app.run(debug=True)
