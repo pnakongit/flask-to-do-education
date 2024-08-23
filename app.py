@@ -61,5 +61,16 @@ def task_delete() -> Response:
     return redirect(url_for("index"))
 
 
+@app.route("/task/toggle", methods=["POST"])
+def task_toggle() -> Response:
+    task_id = int(request.form.get("id"))
+    for task in fake_db:
+        if task["id"] == task_id:
+            task["done"] = not task["done"]
+            flash(f"Task toggled", "success")
+
+    return redirect(url_for("index"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
