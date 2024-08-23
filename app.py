@@ -49,5 +49,17 @@ def create_task() -> Response:
     return redirect(url_for("index"))
 
 
+@app.route("/task/delete", methods=["POST"])
+def task_delete() -> Response:
+    task_id = int(request.form.get("id"))
+
+    for task in fake_db:
+        if task["id"] == task_id:
+            fake_db.remove(task)
+            flash(f"Task deleted", "success")
+
+    return redirect(url_for("index"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
