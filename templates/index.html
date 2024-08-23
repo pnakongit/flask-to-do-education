@@ -67,8 +67,18 @@
                       <div class="small fw-bolder">Status: {{ task.done }}</div>
                     </div>
                   </div>
-                  <div class="col-lg-8">
+                  <div class="col-lg-6">
                     <div> {{ task.name }} </div>
+                  </div>
+                  <div class="col-lg-2">
+                    <form action="{{ url_for("task_delete") }}" method="Post">
+                      <input type="hidden" name="id" value="{{ task.id }}">
+                      <button type="submit" class="btn btn-danger btn-sm mb-1">Delete</button>
+                    </form>
+                    <form action="{{ url_for("task_toggle") }}" method="Post">
+                      <input type="hidden" name="id" value="{{ task.id }}">
+                      <button type="submit" class="btn btn-primary btn-sm">Toggle</button>
+                    </form>
                   </div>
                 </div>
               </div>
