@@ -80,6 +80,11 @@ def task_toggle() -> Response:
     return redirect(url_for("index"))
 
 
+@app.route("/about", methods=["GET"])
+def about() -> str:
+    return render_template("about.html")
+
+
 @app.errorhandler(404)
 def page_not_found(error) -> tuple:
     print(error)
