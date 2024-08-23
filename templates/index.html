@@ -10,12 +10,51 @@
       <div class="col-lg-11 col-xl-9 col-xxl-8">
         <!-- Task Section-->
         <section>
-          <div class="d-flex justify-content-md-end mb-2">
-            <!-- Download resume button-->
-            <!-- Note: Set the link href target to a PDF file within your project-->
-            <a class="btn btn-primary px-4 py-2 " href="#">
-              Create task +
-            </a>
+          {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                {% if category == "success" %}
+                  <div class="alert alert-primary" role="alert">
+                    {{ message }}
+                  </div>
+                {% else %}
+                  <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                  </div>
+                {% endif %}
+
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          <div class="d-flex justify-content-md-end mb-4">
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              New task +
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new task</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form method="POST" action="{{ url_for("create_task") }}">
+                    <div class="modal-body">
+                      <input class="form-control" type="text" name="name" placeholder="Input task description"
+                             aria-label="Input task description">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
           {% for task in task_list %}
             <!-- Experience Card -->
