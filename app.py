@@ -29,6 +29,12 @@ def get_id_for_adding(db: list[dict]) -> int:
     return max([task["id"] for task in db]) + 1
 
 
+def get_task_from_db(pk: int) -> dict:
+    for task in fake_db:
+        if task["id"] == pk:
+            return task
+
+
 @app.route("/", methods=["GET"])
 def index() -> str:
     return render_template("index.html", task_list=fake_db)
@@ -53,10 +59,10 @@ def create_task() -> Response:
 def task_delete() -> Response:
     task_id = int(request.form.get("id"))
 
-    for task in fake_db:
-        if task["id"] == task_id:
-            fake_db.remove(task)
-            flash(f"Task deleted", "success")
+    task = get_task_from_db(task_id)
+    if task is not None:
+        fake_db.remove(task)
+        flash(f"Task deleted", "success")
 
     return redirect(url_for("index"))
 
@@ -64,10 +70,12 @@ def task_delete() -> Response:
 @app.route("/task/toggle", methods=["POST"])
 def task_toggle() -> Response:
     task_id = int(request.form.get("id"))
-    for task in fake_db:
-        if task["id"] == task_id:
-            task["done"] = not task["done"]
-            flash(f"Task toggled", "success")
+
+    task = get_task_from_db(task_id)
+
+    if task is not None:
+        task["done"] = not task["done"]
+        flash(f"Task toggled", "success")
 
     return redirect(url_for("index"))
 
